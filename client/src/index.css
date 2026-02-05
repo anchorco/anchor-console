@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Anchor Docs Theme - Matching docs.getanchor.dev */
+:root {
+  /* Light Mode - Clean Professional Blue Theme */
+  --primary: #2563eb; /* Blue-600 */
+  --primary-foreground: #ffffff;
+  --primary-dark: #1d4ed8; /* Blue-700 */
+  --primary-light: #3b82f6; /* Blue-500 */
+  
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  
+  --background: #f8fafc; /* Slate-50 */
+  --foreground: #0f172a; /* Slate-900 */
+  
+  --card: #ffffff; /* White */
+  --card-foreground: #0f172a;
+  
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  --secondary: #64748b; /* Slate-500 */
+  --secondary-foreground: #ffffff;
+  
+  --muted: #f1f5f9; /* Slate-100 */
+  --muted-foreground: #475569; /* Slate-600 */
+  
+  --accent: #e2e8f0; /* Slate-200 */
+  --accent-foreground: #0f172a;
+  
+  --destructive: #ef4444; /* Red-500 */
+  --destructive-foreground: #ffffff;
+  
+  --success: #10b981; /* Green-500 */
+  --warning: #f59e0b; /* Amber-500 */
+  --info: #3b82f6; /* Blue-500 */
+  
+  --color-success: var(--success);
+  
+  --border: #e2e8f0; /* Slate-200 */
+  --input: #e2e8f0;
+  --ring: #2563eb;
+  
+  --radius: 0.5rem; /* 8px - matching docs */
+  
+  --chart-1: #2563eb; /* Blue */
+  --chart-2: #10b981; /* Green */
+  --chart-3: #f59e0b; /* Amber */
+  --chart-4: #8b5cf6; /* Purple */
+  --chart-5: #ec4899; /* Pink */
+  
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #2563eb;
+}
+
+.dark {
+  /* Dark Mode - Professional Dark Theme */
+  --primary: #3b82f6; /* Blue-500 */
+  --primary-foreground: #ffffff;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa; /* Blue-400 */
+  
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  
+  --background: #0f172a; /* Slate-900 */
+  --foreground: #f1f5f9; /* Slate-100 */
+  
+  --card: #1e293b; /* Slate-800 */
+  --card-foreground: #f1f5f9;
+  
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  
+  --secondary: #94a3b8; /* Slate-400 */
+  --secondary-foreground: #ffffff;
+  
+  --muted: #1e293b;
+  --muted-foreground: #cbd5e1; /* Slate-300 */
+  
+  --accent: #334155; /* Slate-700 */
+  --accent-foreground: #f1f5f9;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  --success: #10b981;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  
+  --color-success: var(--success);
+  
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+  
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #ec4899;
+  
+  --sidebar: #1e293b;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: #334155;
+  --sidebar-ring: #3b82f6;
+}
+
+/* Anchor Docs Theme Utilities */
+.glass-panel {
+  @apply bg-card border border-border shadow-md;
+}
+
+.glass-card {
+  @apply bg-card border border-border shadow-sm hover:shadow-md transition-all duration-200;
+}
+
+.text-glow {
+  /* Removed - cleaner design without glow effects */
+}
+
+.bg-gradient-mesh {
+  /* Removed - using solid backgrounds matching docs */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  /**
+   * Custom container utility that centers content and adds responsive padding.
+   *
+   * This overrides Tailwind's default container behavior to:
+   * - Auto-center content (mx-auto)
+   * - Add responsive horizontal padding
+   * - Set max-width for large screens
+   *
+   * Usage: <div className="container">...</div>
+   *
+   * For custom widths, use max-w-* utilities directly:
+   * <div className="max-w-6xl mx-auto px-4">...</div>
+   */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem; /* 16px - mobile padding */
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem; /* 32px - desktop padding */
+      padding-right: 2rem;
+      max-width: 1280px; /* Standard content width */
+    }
+  }
+}
+
+@keyframes swipeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-swipe-down {
+  animation: swipeDown 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
