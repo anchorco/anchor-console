@@ -54,13 +54,13 @@
   --sidebar-primary-foreground: #ffffff;
   
   --background: #f8fafc; /* Slate-50 */
-  --foreground: #0f172a; /* Slate-900 */
+  --foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   
   --card: #ffffff; /* White */
-  --card-foreground: #0f172a;
+  --card-foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   
   --secondary: #64748b; /* Slate-500 */
   --secondary-foreground: #ffffff;
@@ -69,7 +69,7 @@
   --muted-foreground: #475569; /* Slate-600 */
   
   --accent: #e2e8f0; /* Slate-200 */
-  --accent-foreground: #0f172a;
+  --accent-foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   
   --destructive: #ef4444; /* Red-500 */
   --destructive-foreground: #ffffff;
@@ -93,9 +93,9 @@
   --chart-5: #ec4899; /* Pink */
   
   --sidebar: #ffffff;
-  --sidebar-foreground: #0f172a;
+  --sidebar-foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #0f172a;
+  --sidebar-accent-foreground: #111827; /* gray-900 - Match landing-page and anchor-docs */
   --sidebar-border: #e2e8f0;
   --sidebar-ring: #2563eb;
 }
@@ -173,12 +173,18 @@
 }
 
 @layer base {
+  html {
+    font-size: 15px; /* Match landing-page and anchor-docs */
+  }
+  
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9375rem; /* 15px - Match landing-page and anchor-docs */
+    line-height: 1.6; /* Match landing-page and anchor-docs */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
