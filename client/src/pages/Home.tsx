@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, ShieldAlert, CheckCircle, Database, ArrowUpRight, Lock, History as HistoryIcon } from "lucide-react";
+import { Activity, ShieldAlert, CheckCircle, Database, ArrowUpRight, Lock, History as HistoryIcon, TrendingUp, TrendingDown, HardDrive, AlertTriangle, Clock } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useAuth } from "@/contexts/AuthContext";
 import { agents, audit } from "@/lib/api";
@@ -16,7 +16,9 @@ export default function Home() {
     blocked: "0",
     agents: "0",
     totalAgents: "0",
-    verified: "100%"
+    verified: "100%",
+    dataStorage: "0",
+    dataStorageGrowth: "0%"
   });
   const [data, setData] = useState([
     { time: "00:00", allowed: 0, blocked: 0 },
@@ -38,7 +40,9 @@ export default function Home() {
         blocked: "0",
         agents: "0",
         totalAgents: "0",
-        verified: "100%"
+        verified: "100%",
+        dataStorage: "0",
+        dataStorageGrowth: "0%"
       });
       setRecentActivity([]);
       setData([
@@ -62,7 +66,9 @@ export default function Home() {
         blocked: "342", 
         agents: String(initialAgents),
         totalAgents: "12",
-        verified: "100%" 
+        verified: "100%",
+        dataStorage: "2.4 GB",
+        dataStorageGrowth: "+8.2%"
       });
       // Chart data will be set by updateChartData function via useEffect
       setRecentActivity([
@@ -365,11 +371,24 @@ export default function Home() {
       
       setRecentActivity(recentEvents.slice(0, 10));
       
+      // Calculate data storage (mock for now - can be enhanced with actual data API)
+      // In a real implementation, you'd query the data API to get total storage
+      const estimatedStorageMB = Math.round((totalOperations * 0.5) / 1024); // Rough estimate: 0.5KB per operation
+      const storageGB = (estimatedStorageMB / 1024).toFixed(1);
+      const storageDisplay = estimatedStorageMB < 1024 
+        ? `${estimatedStorageMB} MB` 
+        : `${storageGB} GB`;
+      
+      // Calculate growth (mock: +8.2% for demo, in real app calculate from historical data)
+      const growthPercent = totalOperations > 0 ? "+8.2%" : "0%";
+      
       // Update stats with operations and blocked data (agents already updated above)
       setStats(prev => ({
         ...prev,
         operations: totalOperations.toLocaleString(),
         blocked: totalBlocked.toLocaleString(),
+        dataStorage: storageDisplay,
+        dataStorageGrowth: growthPercent,
       }));
       
       // Update chart data with real aggregated data
@@ -398,23 +417,17 @@ export default function Home() {
         blocked: "0",
         agents: "0",
         totalAgents: "0",
-        verified: "100%"
+        verified: "100%",
+        dataStorage: "0",
+        dataStorageGrowth: "0%"
       });
     }
   }
   return (
     <Layout>
-      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="w-full space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-              Overview
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              Control what your AI agents store. Audit everything.
-            </p>
-          </div>
           <div className="flex gap-3">
             <button 
               onClick={() => !isAuthenticated && setIsSignInModalOpen(true)}
@@ -431,13 +444,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Key Metrics Section */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-foreground">Key Metrics</h2>
+          </div>
+          {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
           {[
             { title: "Active Agents", value: stats.agents, totalValue: stats.totalAgents, change: "0%", icon: Database, color: "text-secondary" },
             { title: "Governed Operations", value: stats.operations, change: isAuthenticated ? "+0%" : "+12%", icon: Activity, color: "text-primary" },
             { title: "Policy Violations Blocked", value: stats.blocked, change: isAuthenticated ? "+0%" : "+5%", icon: ShieldAlert, color: "text-destructive" },
-            { title: "Audit Chain Verified", value: stats.verified, change: "Tamper-evident", icon: CheckCircle, color: "text-green-500", changeColor: "text-muted-foreground" },
+            { title: "Data Storage", value: stats.dataStorage, change: stats.dataStorageGrowth, icon: HardDrive, color: "text-primary", showTrend: true },
           ].map((stat, i) => {
             // Determine color based on change value
             let changeColor = "text-primary"; // default blue for 0%
@@ -445,8 +463,8 @@ export default function Home() {
               changeColor = "text-green-500";
             } else if (stat.change.startsWith("-")) {
               changeColor = "text-red-500";
-            } else if (stat.change === "0%" || stat.changeColor) {
-              changeColor = stat.changeColor || "text-primary";
+            } else if (stat.change === "0%") {
+              changeColor = "text-primary";
             }
             
             return (
@@ -470,17 +488,30 @@ export default function Home() {
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <span className={`${changeColor} font-medium`}>{stat.change}</span> from last month
+                <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                  {(stat as any).showTrend && stat.change.startsWith("+") && (
+                    <TrendingUp className="w-3 h-3 text-green-500" />
+                  )}
+                  {(stat as any).showTrend && stat.change.startsWith("-") && (
+                    <TrendingDown className="w-3 h-3 text-red-500" />
+                  )}
+                  <span className={`${changeColor} font-medium`}>{stat.change}</span>
+                  <span className="text-muted-foreground"> from last month</span>
                 </p>
               </CardContent>
             </Card>
             );
           })}
         </div>
+        </section>
 
-        {/* Main Chart */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Analytics Section */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-foreground">Analytics</h2>
+          </div>
+          {/* Main Chart and Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
           <Card 
             onClick={() => !isAuthenticated && setIsSignInModalOpen(true)}
             className="lg:col-span-2 bg-card border border-border cursor-pointer"
@@ -688,6 +719,30 @@ export default function Home() {
                   )}
                 </ResponsiveContainer>
               </div>
+              <div className="mt-4 pt-4 border-t border-border">
+                <p className="text-xs text-muted-foreground text-center">
+                  {(() => {
+                    const now = new Date();
+                    if (chartTimePeriod === 'day') {
+                      return now.toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      });
+                    } else if (chartTimePeriod === 'month') {
+                      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+                      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                      return `${firstDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${lastDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+                    } else if (chartTimePeriod === 'year') {
+                      const firstDay = new Date(now.getFullYear(), 0, 1);
+                      const lastDay = new Date(now.getFullYear(), 11, 31);
+                      return `${firstDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} - ${lastDay.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+                    }
+                    return '';
+                  })()}
+                </p>
+              </div>
             </CardContent>
           </Card>
 
@@ -755,6 +810,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+        </section>
         
         {/* Sign In Modal */}
         <SignInModal isOpen={isSignInModalOpen} onClose={() => setIsSignInModalOpen(false)} />
