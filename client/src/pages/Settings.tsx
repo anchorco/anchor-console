@@ -281,14 +281,6 @@ export default function Settings() {
   return (
     <Layout>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-            Settings
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Manage API keys, workspaces, and account settings.
-          </p>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Sidebar Navigation */}

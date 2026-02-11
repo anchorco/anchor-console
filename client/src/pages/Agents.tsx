@@ -480,14 +480,6 @@ export default function Agents() {
     <Layout>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-              Agents
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              Persistent identity for each agent. Govern what they store.
-            </p>
-          </div>
           <Dialog open={isCreateOpen} onOpenChange={(open) => {
             if (!isAuthenticated && open) {
               setIsSignInModalOpen(true);

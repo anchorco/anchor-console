@@ -281,12 +281,6 @@ export default function Audit() {
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2">
-              Audit Trail
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              Hash-chained, tamper-evident log of every operation. Prove what happened.
-            </p>
             {selectedAgentId && (
               <p className="text-sm text-muted-foreground mt-1">
                 Showing audit trail for: <span className="text-foreground font-medium">
